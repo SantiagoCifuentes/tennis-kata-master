@@ -19,13 +19,33 @@ public class TennisGame1 implements TennisGame {
             player_score2 += 1;
     }
 
-    private boolean cualquierPuntajeMayorDeCuatro() {
+    public String agregarRaya(int i, String score)
+    {
+        String score1 = score;
+        if (i == 2){
+            return score1 += "-";
+        }
+        return score1;
+    }
+
+    public String calcularPuntajeMayorDeCuatro(){
+        String score = "";
+
+        //if (player_score1 >= 4 || player_score2 >= 4)
+        int minusResult = player_score1 - player_score2;
+
+        if (minusResult == 1)  return  "Advantage player1";
+        else if (minusResult == -1) return  "Advantage player2";
+        else if (minusResult >= 2) return  "Win for player1";
+        return   "Win for player2";
+
+    }
+
+    private boolean puntajeMayorDeCuatro() {
         return player_score1 >=4 || player_score2 >= 4 ;
     }
 
-    public String empate() {
-
-
+    public String calcularEmpate() {
 
         switch (player_score1) {
             case 0:
@@ -41,24 +61,16 @@ public class TennisGame1 implements TennisGame {
                 score = "Deuce";
                 break;
 
-
         }
         return score;
     }
 
 
-    public String puntajeMayorDeCuatro(){
-        String score = "";
-
-        //if (player_score1 >= 4 || player_score2 >= 4)
-            int minusResult = player_score1 - player_score2;
-
-            if (minusResult == 1) score = "Advantage player1";
-            else if (minusResult == -1) score = "Advantage player2";
-            else if (minusResult >= 2) score = "Win for player1";
-            return score = "Win for player2";
-
+    private boolean sonPuntajesIguales() {
+        return player_score1 == player_score2;
     }
+
+
 
     public int puntajeTemporal(int temp){
 
@@ -68,9 +80,11 @@ public class TennisGame1 implements TennisGame {
 
     public  String compararResultados()
     {
+        String score = "";
         int tempScore = 0;
         for (int i = 1; i < 3; i++) {
 
+            score= agregarRaya(i,score);
             tempScore =puntajeTemporal(i);
 
             switch (tempScore) {
@@ -86,6 +100,7 @@ public class TennisGame1 implements TennisGame {
                 case 3:
                     score += "Forty";
                     break;
+
             }
         }
 
@@ -94,13 +109,13 @@ public class TennisGame1 implements TennisGame {
 
 
     public String getScore() {
-        String score = "";
+       if (sonPuntajesIguales())
+           return  calcularEmpate();
+
+       if (puntajeMayorDeCuatro())
+           return calcularPuntajeMayorDeCuatro();
 
 
-
-
-
-
-        return score;
+        return compararResultados();
     }
 }
